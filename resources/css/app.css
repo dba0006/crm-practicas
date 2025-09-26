@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Eliminar espacios en blanco debajo del footer */
+html, body {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    min-height: unset !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+}
+
+#app, main {
+    height: auto !important;
+    min-height: unset !important;
+}
+
+footer {
+    margin-top: 0 !important;
+}
