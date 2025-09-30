@@ -115,11 +115,14 @@
                                 <option value="abierta" {{ old('estado', $incidencia->estado) == 'abierta' ? 'selected' : '' }}>
                                     📝 Abierta - Esperando revisión
                                 </option>
-                                <option value="en_progreso" {{ old('estado', $incidencia->estado) == 'en_progreso' ? 'selected' : '' }}>
-                                    ⚙️ En Progreso - Siendo atendida
+                                <option value="en_proceso" {{ old('estado', $incidencia->estado) == 'en_proceso' ? 'selected' : '' }}>
+                                    ⚙️ En Proceso - Siendo atendida
+                                </option>
+                                <option value="resuelta" {{ old('estado', $incidencia->estado) == 'resuelta' ? 'selected' : '' }}>
+                                    ✅ Resuelta - Problema solucionado
                                 </option>
                                 <option value="cerrada" {{ old('estado', $incidencia->estado) == 'cerrada' ? 'selected' : '' }}>
-                                    ✅ Cerrada - Problema resuelto
+                                    🔒 Cerrada - Caso finalizado
                                 </option>
                             </select>
                             @error('estado')

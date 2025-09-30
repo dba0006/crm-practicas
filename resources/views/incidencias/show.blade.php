@@ -73,11 +73,13 @@
                             <span class="text-sm font-medium">Estado:</span>
                             <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full 
                                 @if($incidencia->estado === 'abierta') bg-blue-100 text-blue-800
-                                @elseif($incidencia->estado === 'en_progreso') bg-yellow-100 text-yellow-800
-                                @else bg-green-100 text-green-800 @endif">
+                                @elseif($incidencia->estado === 'en_proceso') bg-yellow-100 text-yellow-800
+                                @elseif($incidencia->estado === 'resuelta') bg-green-100 text-green-800
+                                @else bg-gray-100 text-gray-800 @endif">
                                 @if($incidencia->estado === 'abierta') 📝 Abierta
-                                @elseif($incidencia->estado === 'en_progreso') ⚙️ En Progreso
-                                @else ✅ Cerrada @endif
+                                @elseif($incidencia->estado === 'en_proceso') ⚙️ En Proceso
+                                @elseif($incidencia->estado === 'resuelta') ✅ Resuelta
+                                @else 🔒 Cerrada @endif
                             </span>
                         </div>
                     </div>
@@ -114,14 +116,30 @@
                                             <input type="hidden" name="descripcion" value="{{ $incidencia->descripcion }}">
                                             <input type="hidden" name="prioridad" value="{{ $incidencia->prioridad }}">
                                             <input type="hidden" name="fecha" value="{{ $incidencia->fecha->format('Y-m-d') }}">
-                                            <input type="hidden" name="estado" value="en_progreso">
+                                            <input type="hidden" name="estado" value="en_proceso">
                                             <button type="submit" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg">
-                                                Marcar En Progreso
+                                                ⚙️ Marcar En Proceso
                                             </button>
                                         </form>
                                     @endif
 
-                                    @if($incidencia->estado === 'en_progreso')
+                                    @if($incidencia->estado === 'en_proceso')
+                                        <form action="{{ route('incidencias.update', $incidencia) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="cliente_id" value="{{ $incidencia->cliente_id }}">
+                                            <input type="hidden" name="titulo" value="{{ $incidencia->titulo }}">
+                                            <input type="hidden" name="descripcion" value="{{ $incidencia->descripcion }}">
+                                            <input type="hidden" name="prioridad" value="{{ $incidencia->prioridad }}">
+                                            <input type="hidden" name="fecha" value="{{ $incidencia->fecha->format('Y-m-d') }}">
+                                            <input type="hidden" name="estado" value="resuelta">
+                                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                                                ✅ Marcar Como Resuelta
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if($incidencia->estado === 'resuelta')
                                         <form action="{{ route('incidencias.update', $incidencia) }}" method="POST" class="inline">
                                             @csrf
                                             @method('PUT')
@@ -131,8 +149,8 @@
                                             <input type="hidden" name="prioridad" value="{{ $incidencia->prioridad }}">
                                             <input type="hidden" name="fecha" value="{{ $incidencia->fecha->format('Y-m-d') }}">
                                             <input type="hidden" name="estado" value="cerrada">
-                                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                                                Marcar Como Cerrada
+                                            <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+                                                🔒 Cerrar Incidencia
                                             </button>
                                         </form>
                                     @endif

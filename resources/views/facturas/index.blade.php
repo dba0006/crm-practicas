@@ -81,7 +81,8 @@
                                                 <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
                                                     @if($factura->estado_pago === 'pagada') bg-green-100 text-green-800
                                                     @elseif($factura->estado_pago === 'pendiente') bg-yellow-100 text-yellow-800
-                                                    @else bg-red-100 text-red-800 @endif">
+                                                    @elseif($factura->estado_pago === 'vencida') bg-red-100 text-red-800
+                                                    @else bg-gray-100 text-gray-800 @endif">
                                                     {{ ucfirst($factura->estado_pago) }}
                                                 </span>
                                             </td>

@@ -77,10 +77,12 @@
                                         <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full 
                                             @if($factura->estado_pago === 'pagada') bg-green-100 text-green-800 
                                             @elseif($factura->estado_pago === 'pendiente') bg-yellow-100 text-yellow-800 
-                                            @else bg-red-100 text-red-800 @endif">
+                                            @elseif($factura->estado_pago === 'vencida') bg-red-100 text-red-800
+                                            @else bg-gray-100 text-gray-800 @endif">
                                             @if($factura->estado_pago === 'pagada') ✅ Pagada
                                             @elseif($factura->estado_pago === 'pendiente') ⏳ Pendiente
-                                            @else ❌ Vencida @endif
+                                            @elseif($factura->estado_pago === 'vencida') ❌ Vencida
+                                            @else ❌ Cancelada @endif
                                         </span>
                                     </div>
                                 </div>
@@ -93,6 +95,89 @@
                                     {{ $factura->descripcion }}
                                 </p>
                             </div>
+
+                            <!-- ACCIONES RÁPIDAS PARA CAMBIAR ESTADO DE PAGO -->
+                            @if($factura->estado_pago !== 'cancelada')
+                            <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 p-6 rounded-lg">
+                                <h4 class="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">⚡ Acciones Rápidas de Pago</h4>
+                                
+                                <div class="flex flex-wrap gap-3">
+                                    @if($factura->estado_pago === 'pendiente')
+                                        <form action="{{ route('facturas.update', $factura) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="cliente_id" value="{{ $factura->cliente_id }}">
+                                            <input type="hidden" name="numero" value="{{ $factura->numero }}">
+                                            <input type="hidden" name="descripcion" value="{{ $factura->descripcion }}">
+                                            <input type="hidden" name="monto" value="{{ $factura->monto }}">
+                                            <input type="hidden" name="impuesto" value="{{ $factura->impuesto }}">
+                                            <input type="hidden" name="fecha" value="{{ $factura->fecha->format('Y-m-d') }}">
+                                            <input type="hidden" name="estado_pago" value="pagada">
+                                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                                                ✅ Marcar Como Pagada
+                                            </button>
+                                        </form>
+                                        
+                                        <form action="{{ route('facturas.update', $factura) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="cliente_id" value="{{ $factura->cliente_id }}">
+                                            <input type="hidden" name="numero" value="{{ $factura->numero }}">
+                                            <input type="hidden" name="descripcion" value="{{ $factura->descripcion }}">
+                                            <input type="hidden" name="monto" value="{{ $factura->monto }}">
+                                            <input type="hidden" name="impuesto" value="{{ $factura->impuesto }}">
+                                            <input type="hidden" name="fecha" value="{{ $factura->fecha->format('Y-m-d') }}">
+                                            <input type="hidden" name="estado_pago" value="vencida">
+                                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                                                ❌ Marcar Como Vencida
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if($factura->estado_pago === 'vencida')
+                                        <form action="{{ route('facturas.update', $factura) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="cliente_id" value="{{ $factura->cliente_id }}">
+                                            <input type="hidden" name="numero" value="{{ $factura->numero }}">
+                                            <input type="hidden" name="descripcion" value="{{ $factura->descripcion }}">
+                                            <input type="hidden" name="monto" value="{{ $factura->monto }}">
+                                            <input type="hidden" name="impuesto" value="{{ $factura->impuesto }}">
+                                            <input type="hidden" name="fecha" value="{{ $factura->fecha->format('Y-m-d') }}">
+                                            <input type="hidden" name="estado_pago" value="pagada">
+                                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                                                ✅ Marcar Como Pagada
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if(in_array($factura->estado_pago, ['pendiente', 'vencida']))
+                                        <form action="{{ route('facturas.update', $factura) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="cliente_id" value="{{ $factura->cliente_id }}">
+                                            <input type="hidden" name="numero" value="{{ $factura->numero }}">
+                                            <input type="hidden" name="descripcion" value="{{ $factura->descripcion }}">
+                                            <input type="hidden" name="monto" value="{{ $factura->monto }}">
+                                            <input type="hidden" name="impuesto" value="{{ $factura->impuesto }}">
+                                            <input type="hidden" name="fecha" value="{{ $factura->fecha->format('Y-m-d') }}">
+                                            <input type="hidden" name="estado_pago" value="cancelada">
+                                            <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+                                                ❌ Cancelar Factura
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+
+                                @if($factura->estado_pago === 'pagada')
+                                <div class="mt-4 p-3 bg-green-100 dark:bg-green-800 border border-green-200 dark:border-green-700 rounded-lg">
+                                    <p class="text-green-800 dark:text-green-200 text-sm">
+                                        ✅ Esta factura ya ha sido pagada. No se requieren más acciones.
+                                    </p>
+                                </div>
+                                @endif
+                            </div>
+                            @endif
                         </div>
 
                         <!-- DATOS DEL CLIENTE -->

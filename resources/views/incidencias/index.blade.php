@@ -61,19 +61,26 @@
                                 </div>
                                 <div class="text-sm text-blue-600 dark:text-blue-400">Abiertas</div>
                             </div>
-                            <!-- En progreso -->
+                            <!-- En proceso -->
                             <div class="bg-yellow-100 dark:bg-yellow-900 p-4 rounded-lg text-center">
                                 <div class="text-2xl font-bold text-yellow-800 dark:text-yellow-200">
-                                    {{ $incidencias->where('estado', 'en_progreso')->count() }}
+                                    {{ $incidencias->where('estado', 'en_proceso')->count() }}
                                 </div>
-                                <div class="text-sm text-yellow-600 dark:text-yellow-400">En Progreso</div>
+                                <div class="text-sm text-yellow-600 dark:text-yellow-400">En Proceso</div>
                             </div>
-                            <!-- Cerradas -->
+                            <!-- Resueltas -->
                             <div class="bg-green-100 dark:bg-green-900 p-4 rounded-lg text-center">
                                 <div class="text-2xl font-bold text-green-800 dark:text-green-200">
+                                    {{ $incidencias->where('estado', 'resuelta')->count() }}
+                                </div>
+                                <div class="text-sm text-green-600 dark:text-green-400">Resueltas</div>
+                            </div>
+                            <!-- Cerradas -->
+                            <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-gray-800 dark:text-gray-200">
                                     {{ $incidencias->where('estado', 'cerrada')->count() }}
                                 </div>
-                                <div class="text-sm text-green-600 dark:text-green-400">Cerradas</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">Cerradas</div>
                             </div>
                         </div>
                     @endif
@@ -118,8 +125,9 @@
                                                 <!-- ESTADO CON COLORES -->
                                                 <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
                                                     @if($incidencia->estado === 'abierta') bg-blue-100 text-blue-800
-                                                    @elseif($incidencia->estado === 'en_progreso') bg-yellow-100 text-yellow-800
-                                                    @else bg-green-100 text-green-800 @endif">
+                                                    @elseif($incidencia->estado === 'en_proceso') bg-yellow-100 text-yellow-800
+                                                    @elseif($incidencia->estado === 'resuelta') bg-green-100 text-green-800
+                                                    @else bg-gray-100 text-gray-800 @endif">
                                                     {{ str_replace('_', ' ', ucfirst($incidencia->estado)) }}
                                                 </span>
                                             </td>
