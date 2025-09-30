@@ -97,7 +97,7 @@
                             </div>
 
                             <!-- ACCIONES RÁPIDAS PARA CAMBIAR ESTADO DE PAGO -->
-                            @if($factura->estado_pago !== 'cancelada')
+                            @if($factura->estado_pago !== 'pagada')
                             <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 p-6 rounded-lg">
                                 <h4 class="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">⚡ Acciones Rápidas de Pago</h4>
                                 
@@ -147,23 +147,6 @@
                                             <input type="hidden" name="estado_pago" value="pagada">
                                             <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
                                                 ✅ Marcar Como Pagada
-                                            </button>
-                                        </form>
-                                    @endif
-
-                                    @if(in_array($factura->estado_pago, ['pendiente', 'vencida']))
-                                        <form action="{{ route('facturas.update', $factura) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="cliente_id" value="{{ $factura->cliente_id }}">
-                                            <input type="hidden" name="numero" value="{{ $factura->numero }}">
-                                            <input type="hidden" name="descripcion" value="{{ $factura->descripcion }}">
-                                            <input type="hidden" name="monto" value="{{ $factura->monto }}">
-                                            <input type="hidden" name="impuesto" value="{{ $factura->impuesto }}">
-                                            <input type="hidden" name="fecha" value="{{ $factura->fecha->format('Y-m-d') }}">
-                                            <input type="hidden" name="estado_pago" value="cancelada">
-                                            <button type="submit" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
-                                                ❌ Cancelar Factura
                                             </button>
                                         </form>
                                     @endif
